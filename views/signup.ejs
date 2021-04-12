@@ -5,19 +5,21 @@
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/main.css" />
+<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
 <body>
 <div class="container text-center">
-<div class=" col-sm-offset-3">
+<!-- <div class=" col-sm-offset-3">
 
     <h1><span class="fa fa-sign-in"></span> Signup</h1>
 
     <% if (message.length > 0) { %>
         <div class="alert alert-danger"><%= message %></div>
-    <% } %>
+    <% } %> -->
 
     <!-- LOGIN FORM -->
-    <form action="/signup" method="post">
+    <!-- <form action="/signup" method="post">
         <div class="form-group">
             <label>Email</label>
             <input type="text" class="form-control" name="email">
@@ -30,12 +32,37 @@
         <button type="submit" class="btn btn-lg btn-primary btn-block">Signup</button>
     </form>
 
-    <hr>
 
-    <p>Already have an account? <a href="/login">Login</a></p>
-    <p>Or go <a href="/">home</a>.</p>
 
-</div>
+</div> -->
+
+      <div class="inner col-sm-10 col-sm-offset-3">
+        <section>
+          <% if (message.length > 0) { %>
+              <div class="alert alert-danger"><%= message %></div>
+          <% } %>
+          <h1>SIGNUP</h1>
+              <form action="/signup" method="post">
+            <div class="fields">
+              <div class="field">
+                <input type="email" name="email" id="email" placeholder="Email" />
+              </div>
+              <div class="field">
+                <input type="password" name="password" id="password" placeholder="password" />
+              </div>
+
+            </div>
+            <ul class="actions">
+              <li><button type="submit">Signup</button></li>
+            </ul>
+          </form>
+        </section>
+        <hr>
+
+        <p>Already have an account? <a href="/login">Login</a></p>
+        <p>Or go <a href="/">home</a>.</p>
+      </div>
+
 </div>
 </body>
 </html>

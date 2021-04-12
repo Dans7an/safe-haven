@@ -1,10 +1,18 @@
 module.exports = function(app, passport, db) {
+var ObjectId = require('mongodb').ObjectId;
+const multer = require('multer');
 
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
-        res.render('index.ejs');
+      db.collection('houses').find().toArray((err, result) => {
+        if (err) return console.log(err)
+        res.render('index.ejs', {
+          user : req.user,
+          messages: result
+        })
+      });
     });
 
     // PROFILE SECTION =========================
@@ -25,9 +33,19 @@ module.exports = function(app, passport, db) {
     });
 
 // message board routes ===============================================================
-
-    app.post('/messages', (req, res) => {
-      db.collection('houses').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+        console.log(file);
+    cb(null, '../public/img/')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now() + ".jpg")
+  }
+})
+var upload = multer({storage: storage})
+    app.post('/messages', upload.single('file-to-upload'), (req, res) => {
+      console.log(req.body["file-to-upload"]);
+      db.collection('houses').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0, house: 'img/' + req.body["file-to-upload"]}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
@@ -35,8 +53,9 @@ module.exports = function(app, passport, db) {
     })
 
     app.put('/messages', (req, res) => {
+      console.log(ObjectId(req.body.id));
       db.collection('houses')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
+      .findOneAndUpdate({_id: ObjectId(req.body.id)}, {
         $set: {
           thumbUp:req.body.thumbUp + 1
         }
@@ -50,7 +69,8 @@ module.exports = function(app, passport, db) {
     })
 
     app.delete('/messages', (req, res) => {
-      db.collection('houses').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
+      console.log('name', 'message', req.body.id);
+      db.collection('houses').findOneAndDelete({_id: ObjectId(req.body.id)}, (err, result) => {
         if (err) return res.send(500, err)
         res.send('Message deleted!')
       })

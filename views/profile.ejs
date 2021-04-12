@@ -1,36 +1,41 @@
 <!doctype html>
 <html>
+
 <head>
-    <title>21 Savage Fan Site</title>
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
-    <link rel="stylesheet" href="style.css">
+  <title>Safe-Haven</title>
+  <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <link rel="stylesheet" href="assets/css/main.css" />
+  <noscript>
+    <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
-<body class="text-center">
-<div class="container">
+
+<body class="is-preload">
+  <div class="container">
 
     <div class="page-header text-center">
-        <h1>Profile Page</h1>
-        <h2><%= user.local.email %></h2>
-        <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-        <% if (user.local.email) { %>
-          <a href="/unlink/local" class="btn btn-default">Unlink</a>
-        <% } else { %>
-            <a href="/connect/local" class="btn btn-default">Connect Local</a>
-        <% } %>
+      <h1>Profile Page</h1>
+      <h2><%= user.local.email %></h2>
+      <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+      <% if (user.local.email) { %>
+      <a href="/unlink/local" class="btn btn-default">Delete</a>
+      <% } else { %>
+      <a href="/connect/local" class="btn btn-default">Connect Local</a>
+      <% } %>
     </div>
 
-    <div class="row">
+    <!-- <div class="row"> -->
 
-        <!-- LOCAL INFORMATION -->
+    <!-- LOCAL INFORMATION -->
 
-        <div class="col">
+    <!-- <div class="col">
           <h3>Messages</h3>
           <ul class="messages">
           <% for(var i=0; i<messages.length; i++) {%>
-            <li class="message">
+            <li class="message" data-id="<%= messages[i]._id %>"</li>
               <img class="houses" src="img/sample-house.jpg" alt="">
               <span><%= messages[i].name %></span>
               <span><%= messages[i].msg %></span>
@@ -52,9 +57,83 @@
         </div>
         <% } %>
 
-</div>
+</div> -->
+    <div id="wrapper">
+      <!-- Header -->
+      <header id="header">
+        <div class="inner">
 
-<script src="main.js"></script>
+          <!-- Logo -->
+          <a href="index.html" class="logo">
+            <span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Phantom</span>
+          </a>
 
+          <!-- Nav -->
+          <nav>
+            <ul>
+              <li><a href="#menu">Menu</a></li>
+            </ul>
+          </nav>
+
+        </div>
+      </header>
+      <!-- Menu -->
+      <nav id="menu">
+        <h2>Menu</h2>
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/signup">Signup</a></li>
+          <li><a href="/login">Login</a></li>
+          <li><a href="generic.html">Contact us</a></li>
+          <li><a href="elements.html">Elements</a></li>
+        </ul>
+      </nav>
+      <!-- Main -->
+      <div id="main">
+        <div class="inner">
+
+          <section class="tiles">
+            <% for(var i=0; i<messages.length; i++) {%>
+            <article data-id="<%= messages[i]._id %>">
+              <span class="image">
+                <img class="houses" src="<%= messages[i].house %>" alt="">
+              </span>
+              <!-- <a href="generic.html"> -->
+                <div class="content">
+                  <span><%= messages[i].msg %></span>
+                  <span><%= messages[i].thumbUp %></span>
+                  <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
+                  <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+                </div>
+              <!-- </a> -->
+              <span><%= messages[i].name %></span>
+              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+            </article>
+            <% } %>
+          </section>
+
+        </div>
+      </div>
+
+      <h2>Add a house</h2>
+    <% if (user.local.email) { %>
+      <form action="/messages" method="POST">
+        <input type="text" name="name">
+        <input type="text" placeholder="message" name="msg">
+        <input id="logo" type="file" name="file-to-upload" placeholder="">
+        <button type="submit">Submit</button>
+      </form>
+    </div>
+    <% } %>
+    </div>
+
+    <script src="main.js"></script>
+    <!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
 </body>
+
 </html>

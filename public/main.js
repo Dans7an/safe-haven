@@ -5,6 +5,7 @@ Array.from(thumbUp).forEach(function(element) {
       element.addEventListener('click', function(){
         const name = this.parentNode.parentNode.childNodes[1].innerText
         const msg = this.parentNode.parentNode.childNodes[3].innerText
+        const house_id = this.parentNode.parentNode.getAttribute('data-id')
         const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
         fetch('messages', {
           method: 'put',
@@ -12,6 +13,7 @@ Array.from(thumbUp).forEach(function(element) {
           body: JSON.stringify({
             'name': name,
             'msg': msg,
+            'id': house_id,
             'thumbUp':thumbUp
           })
         })
@@ -20,7 +22,7 @@ Array.from(thumbUp).forEach(function(element) {
         })
         .then(data => {
           console.log(data)
-          window.location.reload(true)
+          // window.location.reload(true)
         })
       });
 });
@@ -29,6 +31,8 @@ Array.from(trash).forEach(function(element) {
       element.addEventListener('click', function(){
         const name = this.parentNode.parentNode.childNodes[1].innerText
         const msg = this.parentNode.parentNode.childNodes[3].innerText
+        const house_id = this.parentNode.parentNode.getAttribute('data-id')
+                console.log(house_id);
         fetch('messages', {
           method: 'delete',
           headers: {
@@ -36,7 +40,8 @@ Array.from(trash).forEach(function(element) {
           },
           body: JSON.stringify({
             'name': name,
-            'msg': msg
+            'msg': msg,
+            'id': house_id
           })
         }).then(function (response) {
           window.location.reload()
