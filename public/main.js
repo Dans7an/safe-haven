@@ -1,6 +1,34 @@
 var thumbUp = document.getElementsByClassName("fa-thumbs-up");
 var trash = document.getElementsByClassName("fa-trash");
 
+var wrapper = document.querySelector('#wrapper')
+wrapper.addEventListener('submit', submit)
+
+function submit(e){
+  e.preventDefault()
+  console.log(e.target);
+  if(e.target.tagName === 'FORM'){
+    const formInfo = e.target
+    const form = new FormData()
+    const data = {
+      name: formInfo.querySelector('.name').value,
+      msg: formInfo.querySelector('.msg').value,
+      "file-to-upload": formInfo.querySelector('.logo').files[0]
+    }
+    console.log(e.target);
+
+    for(let i in data){
+      form.set(i, data[i])
+    }
+    fetch('messages', {
+      method: 'post',
+      body: form
+    }).then (() => {
+      window.location.reload(true)
+    })
+  }
+}
+
 Array.from(thumbUp).forEach(function(element) {
       element.addEventListener('click', function(){
         const name = this.parentNode.parentNode.childNodes[1].innerText

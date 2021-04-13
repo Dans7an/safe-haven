@@ -117,11 +117,11 @@
 
       <h2>Add a house</h2>
     <% if (user.local.email) { %>
-      <form action="/messages" method="POST">
-        <input type="text" name="name">
-        <input type="text" placeholder="message" name="msg">
-        <input id="logo" type="file" name="file-to-upload" placeholder="">
-        <button type="submit">Submit</button>
+      <form>
+        <input type="text" name="name" class="name">
+        <input type="text" placeholder="message" name="msg" class="msg">
+        <input class="logo" type="file" name="file-to-upload" placeholder="">
+        <input type="submit" class= "submitBtn" />
       </form>
     </div>
     <% } %>

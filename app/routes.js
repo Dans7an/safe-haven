@@ -1,6 +1,5 @@
-module.exports = function(app, passport, db) {
+module.exports = function(app, passport, db, multer) {
 var ObjectId = require('mongodb').ObjectId;
-const multer = require('multer');
 
 // normal routes ===============================================================
 
@@ -35,17 +34,19 @@ const multer = require('multer');
 // message board routes ===============================================================
 var storage = multer.diskStorage({
   destination: (req, file, cb) => {
-        console.log(file);
-    cb(null, '../public/img/')
+    cb(null, 'public/img/')
+    console.log("1",file);
   },
   filename: (req, file, cb) => {
-    cb(null, file.fieldname + '-' + Date.now() + ".jpg")
+    cb(null, file.fieldname + '-' + Date.now() + ".png")
+        console.log("2", file);
   }
 })
 var upload = multer({storage: storage})
     app.post('/messages', upload.single('file-to-upload'), (req, res) => {
-      console.log(req.body["file-to-upload"]);
-      db.collection('houses').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0, house: 'img/' + req.body["file-to-upload"]}, (err, result) => {
+      // console.log(req.body["file-to-upload"]);
+      console.log(req.file);
+      db.collection('houses').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0, house: 'img/' + req.file.filename}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
