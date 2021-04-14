@@ -1,17 +1,36 @@
 module.exports = function(app, passport, db, multer) {
 var ObjectId = require('mongodb').ObjectId;
 
+// Regex for the search
+function escapeRegex(text) {
+  return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
-      db.collection('houses').find().toArray((err, result) => {
-        if (err) return console.log(err)
-        res.render('index.ejs', {
-          user : req.user,
-          messages: result
-        })
-      });
+      if(req.query.search){
+        // Fuzzy Search here 
+        const regex = new RegExp(escapeRegex(req.query.search), 'gi')
+        // get search results
+        db.collection('houses').find({name: regex}).toArray((err, result) => {
+          if (err) return console.log(err)
+          res.render('index.ejs', {
+            user : req.user,
+            messages: result
+          })
+        });
+      } else {
+        db.collection('houses').find().toArray((err, result) => {
+          if (err) return console.log(err)
+          res.render('index.ejs', {
+            user : req.user,
+            messages: result
+          })
+        });
+      }
+
     });
 
     // PROFILE SECTION =========================
@@ -24,6 +43,20 @@ var ObjectId = require('mongodb').ObjectId;
           })
         })
     });
+
+
+    // FULL VIEW OF THE HOUSE ==============================
+    app.get('/fullView', function(req,res){
+      console.log(req.query.house_id);
+      db.collection('houses').findOne({_id: ObjectId(req.query.house_id)}, (err, result) => {
+        if(err) return res.send(500, err)
+        console.log(result);
+        res.render('generic.ejs', {
+          user: req.user,
+          message: result
+        })
+      })
+    })
 
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {

@@ -21,9 +21,9 @@
 <div class="SearchBar">
 	<h2 style="color: white; text-align: center">Find a place to safe home to reside in one click!</h2>
 <div id="SearchBar-fields">
-	<form class="" action="index.html" method="post">
-		<input type="text" name="" value="" placeholder="Search for a city">
-<button type="button" name="button" id="SearchBar-submit">Search</button>
+	<form class="" action="/" method="GET">
+		<input type="text" name="search" placeholder="Search for a city">
+<button type="submit" id="SearchBar-submit" value="Search">Search</button>
 	</form>
 </div>
 </div>
@@ -34,9 +34,9 @@
 						<div class="inner">
 
 							<!-- Logo -->
-								<a href="index.html" class="logo">
+								<!-- <a href="index.html" class="logo">
 									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Phantom</span>
-								</a>
+								</a> -->
 
 							<!-- Nav -->
 								<nav>
@@ -66,18 +66,18 @@
 
 							<section class="tiles">
 																<% for(var i=0; i<messages.length; i++) {%>
-								<article data-id="<%= messages[i]._id %>" >
+								<article data-id="<%= messages[i]._id %>" class="fullView">
 									<span class="image">
 										<img class="houses" src="<%= messages[i].house %>" alt="">
 									</span>
-									<a href="generic.html">
+									<!-- <a> -->
 										<div class="content">
 											<span><%= messages[i].msg %></span>
 											<span><%= messages[i].thumbUp %></span>
 											<span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
 											<span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
 										</div>
-									</a>
+									<!-- </a> -->
 									<span><%= messages[i].name %></span>
 								</article>
 																<% } %>
@@ -260,6 +260,7 @@
 
 			</div>
 
+			<script src="main.js"></script>
 		<!-- Scripts -->
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/browser.min.js"></script>
