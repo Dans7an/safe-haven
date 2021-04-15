@@ -74,7 +74,14 @@ body {
 	    cursor: pointer;
 	    background-color: #ca0000d2;
 	  }
-
+.vertical{
+	width: 30%;
+	float: left;
+	margin: 1rem;
+}
+.generic{
+	width: 100%;
+}
 ol, ul {
 	list-style: none;
 }

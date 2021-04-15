@@ -21,7 +21,7 @@ var db
 //req.body["file-to-upload"]
 
 // configuration ===============================================================
-mongoose.connect(configDB.url, (err, database) => {
+mongoose.connect(process.env.mongoUrl, (err, database) => {
   if (err) return console.log(err)
   db = database
   require('./app/routes.js')(app, passport, db, multer);

@@ -96,7 +96,7 @@
             <% for(var i=0; i<messages.length; i++) {%>
             <article data-id="<%= messages[i]._id %>">
               <span class="image">
-                <img class="houses" src="<%= messages[i].house %>" alt="">
+                <img class="houses" src="<%= messages[i].house[0] %>" alt="">
               </span>
               <!-- <a href="generic.html"> -->
                 <div class="content">
@@ -117,10 +117,10 @@
 
       <h2>Add a house</h2>
     <% if (user.local.email) { %>
-      <form>
+      <form action="/messages" method="post" enctype="multipart/form-data">
         <input type="text" name="name" class="name">
         <input type="text" placeholder="message" name="msg" class="msg">
-        <input class="logo" type="file" name="file-to-upload" placeholder="">
+        <input class="logo" type="file" name="file-to-upload" placeholder="" multiple>
         <input type="submit" class= "submitBtn" />
       </form>
     </div>

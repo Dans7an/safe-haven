@@ -11,7 +11,7 @@ function escapeRegex(text) {
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
       if(req.query.search){
-        // Fuzzy Search here 
+        // Fuzzy Search here
         const regex = new RegExp(escapeRegex(req.query.search), 'gi')
         // get search results
         db.collection('houses').find({name: regex}).toArray((err, result) => {
@@ -76,10 +76,11 @@ var storage = multer.diskStorage({
   }
 })
 var upload = multer({storage: storage})
-    app.post('/messages', upload.single('file-to-upload'), (req, res) => {
+    app.post('/messages', upload.array('file-to-upload', 3), (req, res) => {
       // console.log(req.body["file-to-upload"]);
-      console.log(req.file);
-      db.collection('houses').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0, house: 'img/' + req.file.filename}, (err, result) => {
+      // 'img/' +
+      console.log(req.files);
+      db.collection('houses').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0, house: req.files.map(f => 'img/' + f.filename)}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
