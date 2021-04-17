@@ -57,7 +57,32 @@
 					<div>
 						<div >
 							<!-- <h1>Generic Page</h1> -->
-							<section class="vertical">
+							<section class="vertical img clearfix" style="background-image:
+   url('<%= message.house[0] %>')">
+
+							</section>
+							<section class="vertical clearfix" style="border: 1px solid black; height: 500px">
+								<% if(message.house.length > 1){ %>
+								<section class="horizontal img" style="background-image:
+   url('<%= message.house[1] %>')">
+
+								</section>
+								<% } %>
+								<% if(message.house.length > 2){ %>
+									<section class="horizontal img" style="background-image:
+   url('<%= message.house[2] %>')">
+
+									</section>
+							<% } %>
+							</section>
+							<section class="vertical clearfix" style="border: 1px solid black; height: 500px">
+								<p><%= message.name %></p>
+								<p><%= message.msg %></p>
+								<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
+
+							</section>
+							<!-- <h1>Generic Page</h1> -->
+							<!-- <section class="vertical">
 								<img src="<%= message.house[0] %>" alt="" class="generic" />
 							</section>
 							<section class="vertical">
@@ -77,7 +102,7 @@
 								<p><%= message.msg %></p>
 								<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
 
-							</section>
+							</section> -->
 	        	</div>
 					</div>
 

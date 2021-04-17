@@ -17,6 +17,7 @@ var session      = require('express-session');
 
 var configDB = require('./config/database.js');
 var multer = require('multer');
+const nodemailer = require("nodemailer");
 var db
 //req.body["file-to-upload"]
 

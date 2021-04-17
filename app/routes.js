@@ -1,5 +1,6 @@
 module.exports = function(app, passport, db, multer) {
 var ObjectId = require('mongodb').ObjectId;
+const nodemailer = require("nodemailer");
 
 // Regex for the search
 function escapeRegex(text) {
@@ -102,7 +103,44 @@ var upload = multer({storage: storage})
         res.send(result)
       })
     })
-
+// for the Mailer
+app.post('/sendEmail', function (req, res) {
+    console.log(req.body)
+    async function main() {
+      // create reusable transporter object using the default SMTP transport
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.ethereal.email',
+        port: 587,
+        auth: {
+          user: 'tamara.gleason42@ethereal.email',
+          pass: '6asFE7kp2A3jXJtqjB'
+        }
+      });
+      // let singleEmailArray = []
+      // if(typeof req.body.email === "string") {
+      //   singleEmailArray.push(req.body.email)
+      //   console.log(singleEmailArray)
+      //   req.body.email = singleEmailArray
+      // }
+      // send mail with defined transport object
+      // "${req.body.name}" <${req.body.serSendEmail}>
+      let info = await transporter.sendMail({
+        from: `"Fred Foo :ghost:" ${req.body.email}`,// sender address
+        to: 'tamara.gleason42@ethereal.email',// list of receivers
+        subject: "Hello ✔", // Subject line
+        text: req.body.message, // plain text body
+        // html: "<b>Hello world?</b>", // html body
+      });
+      console.log("Message sent: %s", info.messageId);
+      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+      // Preview only available when sending through an Ethereal account
+      console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+    }
+    main().catch(console.error);
+    res.redirect('/')
+  })
+  // deleting
     app.delete('/messages', (req, res) => {
       console.log('name', 'message', req.body.id);
       db.collection('houses').findOneAndDelete({_id: ObjectId(req.body.id)}, (err, result) => {
