@@ -2708,7 +2708,8 @@ input, select, textarea {
 			position: relative;
 			width: calc(33.33333% - 2.5em);
 			margin: 2.5em 0 0 2.5em;
-			box-shadow: 5px 5px 5px rgb(138 137 137);
+			/* box-shadow: 5px 5px 5px rgb(138 137 137); */
+			box-shadow: 2px 3px 5px rgb(138 137 137);
 			border-radius: 6px;
 		}
 
