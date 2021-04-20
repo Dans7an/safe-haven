@@ -42,8 +42,20 @@
               <div class="alert alert-danger"><%= message %></div>
           <% } %>
           <h1>SIGNUP</h1>
-              <form action="/signup" method="post">
+              <form action="/guestSignup" method="post">
             <div class="fields">
+              <div class="field half">
+                <input type="text" name="firstName" id="name" placeholder="firstName" />
+              </div>
+              <div class="field half">
+                <input type="text" name="lastName" id="email" placeholder="lastName" />
+              </div>
+              <div class="field half">
+                <input type="text" name="age" id="name" placeholder="age" />
+              </div>
+              <div class="field half">
+                <input type="text" name="sex" id="email" placeholder="sex" />
+              </div>
               <div class="field">
                 <input type="email" name="email" id="email" placeholder="Email" />
               </div>

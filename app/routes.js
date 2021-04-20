@@ -2,6 +2,14 @@ module.exports = function(app, passport, db, multer) {
 var ObjectId = require('mongodb').ObjectId;
 const nodemailer = require("nodemailer");
 
+// const cloudinary = require('cloudinary').v2;
+// cloudinary.config({
+//   cloud_name: 'ddlqobmyw',
+//   api_key: '422638137183422',
+//   api_secret: '-Gq1YDQl4-kaLh7v9-8r5jncDJo'
+// })
+
+
 // Regex for the search
 function escapeRegex(text) {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -80,15 +88,35 @@ var upload = multer({storage: storage})
     app.post('/messages', upload.array('file-to-upload', 3), (req, res) => {
       // console.log(req.body["file-to-upload"]);
       // 'img/' +
+      // const resulting = cloudinary.uploader.upload(req.files.('img/' + filename)
       console.log(req.files);
-      db.collection('houses').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0, house: req.files.map(f => 'img/' + f.filename)}, (err, result) => {
+      db.collection('houses').save({
+        name: req.body.name,
+        msg: req.body.msg,
+        rules: req.body.rules,
+        description: req.body.description,
+        house: req.files.map(f => 'img/' + f.filename)},
+      (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
       })
     })
+// editing houses
+    app.get('/edit/:houseId', isLoggedIn, function(req,res){
+      const param = req.params.houseId
+      console.log(param);
+      db.collection('houses').find({_id: ObjectId(String(param))}).toArray((err, result) => {//go to collection, find specific one, place in array
 
-    app.put('/messages', (req, res) => {
+        if (err) return console.log(err)// if the response is an err
+        console.log(result);
+        res.render('edit.ejs', {//if response is good render the profile page
+          user : req.user, //results from the collection
+          messages: result
+        })
+      })
+    })
+    app.post('/messages', (req, res) => {
       console.log(ObjectId(req.body.id));
       db.collection('houses')
       .findOneAndUpdate({_id: ObjectId(req.body.id)}, {
@@ -140,6 +168,36 @@ app.post('/sendEmail', function (req, res) {
     main().catch(console.error);
     res.redirect('/')
   })
+
+  app.get('/updateHouse', isLoggedIn, (req,res) => {
+    db.collection('houses').find().toArray((err,result) => {
+      if(err) return console.log(err);
+      res.render('profile.ejs', {
+        user: req.user,
+        messages: result
+      })
+    })
+  })
+
+  app.post('/updateHouse', upload.array('file-to-upload', 3), (req,res) => {
+    console.log(req.body.ObjectId);
+    db.collection('houses').update({_id: ObjectId(req.body.ObjectId)},
+      {
+        $set: {
+          name: req.body.name,
+          msg: req.body.msg,
+          house: req.files.map(f => 'img/' + f.filename)
+        }
+      }, function(err, result){
+        if(err) {
+          console.log(err);
+        } else {
+          console.log("House updated successfully");
+          res.redirect("/updateHouse")
+        }
+      }
+  )
+  })
   // deleting
     app.delete('/messages', (req, res) => {
       console.log('name', 'message', req.body.id);
@@ -168,7 +226,7 @@ app.post('/sendEmail', function (req, res) {
         }));
 
         // SIGNUP =================================
-        // show the signup form
+        // show the signup form for host
         app.get('/signup', function(req, res) {
             res.render('signup.ejs', { message: req.flash('signupMessage') });
         });
@@ -179,6 +237,33 @@ app.post('/sendEmail', function (req, res) {
             failureRedirect : '/signup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
+
+        // locally --------------------------------
+            // LOGIN ===============================
+            // show the login form
+            app.get('/loginguest', function(req, res) {
+                res.render('login.ejs', { message: req.flash('loginMessage') });
+            });
+
+            // process the login form
+            app.post('/login', passport.authenticate('local-login', {
+                successRedirect : '/profile', // redirect to the secure profile section
+                failureRedirect : '/login', // redirect back to the signup page if there is an error
+                failureFlash : true // allow flash messages
+            }));
+
+            // SIGNUP =================================
+            // show the signup form for guest
+            app.get('/guestSignup', function(req, res) {
+                res.render('guestSignup.ejs', { message: req.flash('signupMessage') });
+            });
+
+            // process the signup form
+            app.post('/guestSignup', passport.authenticate('local-signup', {
+                successRedirect : '/profile', // redirect to the secure profile section
+                failureRedirect : '/guestSignup', // redirect back to the signup page if there is an error
+                failureFlash : true // allow flash messages
+            }));
 
 // =============================================================================
 // UNLINK ACCOUNTS =============================================================

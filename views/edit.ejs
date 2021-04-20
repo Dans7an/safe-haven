@@ -8,9 +8,9 @@
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
   <!-- <link rel="stylesheet" href="style.css"> -->
-  <link rel="stylesheet" href="assets/css/main.css" />
+  <link rel="stylesheet" href="../assets/css/main.css" />
   <noscript>
-    <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+    <link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
 </head>
 
 <body class="is-preload">
@@ -65,7 +65,7 @@
 
           <!-- Logo -->
           <a href="index.html" class="logo">
-            <span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Phantom</span>
+            <span class="symbol"><img src="../images/logo.svg" alt="" /></span><span class="title">Phantom</span>
           </a>
 
           <!-- Nav -->
@@ -93,21 +93,19 @@
         <div class="inner">
 
           <section class="tiles">
-            <% for(var i=0; i<messages.length; i++) {%>
-            <article data-id="<%= messages[i]._id %>">
+            <% for(var i=0; i<messages[0].house.length; i++) {%>
+            <article data-id="<%= messages[0]._id %>">
+							<span>Image <%= i + 1 %></span>
               <span class="image square">
-                <img class="houses landscape" src="<%= messages[i].house[0] %>" alt="">
+                <img class="houses landscape" src="../<%= messages[0].house[i] %>" alt="">
               </span>
               <!-- <a href="generic.html"> -->
                 <div class="content">
-                  <span><%= messages[i].name %></span>
-                  <span><%= messages[i].thumbUp %></span>
-                  <a href="edit/<%= messages[i]._id %>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                  <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+                  <span><%= messages[0].name %></span>
+                  <!-- <span><%= messages[0].thumbUp %></span> -->
                 </div>
               <!-- </a> -->
-              <span><%= messages[i].msg %></span>
-              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+              <span><%= messages[0].msg %></span>
             </article>
             <% } %>
           </section>
@@ -115,14 +113,14 @@
         </div>
       </div>
 
-      <h2>Add a house</h2>
+      <h2>Update house</h2>
     <% if (user.local.email) { %>
-      <form action="/messages" method="post" enctype="multipart/form-data">
-        <input type="text" name="name" class="name" placeholder="location">
-        <input type="text" placeholder="space to lend" name="msg" class="msg">
-        <input type="text" name="rules" value="" placeholder="house rules eg smoking, pets, or kids">
-        <textarea name="description" rows="10" cols="80" placeholder="house description and Miscellenous"></textarea>
-        <!-- <input type="text" placeholder="Preferred way of Contacting you?" name="contact"> -->
+      <form action="/updateHouse" method="post" enctype="multipart/form-data">
+        <input type="text" name="name" class="name" placeholder="location" value="<%= messages[0].name  %>">
+        <input type="text" placeholder="space to lend" name="msg" class="msg" value="<%= messages[0].msg  %>">
+        <!-- <textarea name="description" rows="10" cols="80" placeholder="house description or extra information"></textarea>
+        <input type="text" placeholder="Preferred way of Contacting you?" name="contact"> -->
+				<input type="text" name="ObjectId" value="<%= messages[0]._id %>" style="display: none">
         <input class="logo" type="file" name="file-to-upload" placeholder="" multiple>
         <input type="submit" class= "submitBtn" />
       </form>
@@ -130,13 +128,13 @@
     <% } %>
     </div>
 
-    <script src="main.js"></script>
+    <script src="../main.js"></script>
     <!-- Scripts -->
-			<script src="assets/js/jquery.min.js"></script>
-			<script src="assets/js/browser.min.js"></script>
-			<script src="assets/js/breakpoints.min.js"></script>
-			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
 </body>
 
 </html>

@@ -20,6 +20,13 @@ var multer = require('multer');
 const nodemailer = require("nodemailer");
 var db
 //req.body["file-to-upload"]
+// cloudinary cloud service for images
+// const cloudinary = require('cloudinary').v2;
+// cloudinary.config({
+//   cloud_name: 'ddlqobmyw',
+//   api_key: '422638137183422',
+//   api_secret: '-Gq1YDQl4-kaLh7v9-8r5jncDJo'
+// })
 
 // configuration ===============================================================
 mongoose.connect(process.env.mongoUrl, (err, database) => {
