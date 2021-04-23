@@ -1,42 +1,16 @@
 <!doctype html>
 <html>
 <head>
-    <title>21 Savage Fan Site</title>
+    <title>Safe-Haven</title>
     <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
-   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="assets/css/main.css" />
 <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
 </head>
 <body>
+  <% if(page === 'hostLogin') { %>
 <div class="container text-center">
-
-    <!-- <h1><span class="fa fa-sign-in"></span> Login</h1>
-
-    <% if (message.length > 0) { %>
-        <div class="alert alert-danger"><%= message %></div>
-    <% } %> -->
-
-    <!-- LOGIN FORM -->
-    <!-- <form action="/login" method="post">
-        <div class="form-group">
-            <label>Email</label>
-            <input type="text" class="form-control" name="email">
-        </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" name="password">
-        </div>
-
-        <button type="submit" class="btn btn-lg btn-primary btn-block">Login</button>
-    </form>
-
-    <hr>
-
-    <p>Need an account? <a href="/signup">Signup</a></p>
-    <p>Or go <a href="/">home</a>.</p> -->
-
-
 
 
     <div class="inner col-sm-10 col-sm-offset-3">
@@ -44,8 +18,8 @@
         <% if (message.length > 0) { %>
             <div class="alert alert-danger"><%= message %></div>
         <% } %>
-        <h1>Login</h1>
-            <form action="/login" method="post">
+        <h1>HOST LOGIN</h1>
+            <form action="/hostLogin" method="post">
           <div class="fields">
             <div class="field">
               <input type="email" name="email" id="email" placeholder="Email" />
@@ -62,9 +36,49 @@
       </section>
       <hr>
 
-      <p>Already have an account? <a href="/signup">Signup</a></p>
+      <p>Dont have an account? <a href="/hostSignup">Signup</a></p>
+      <span>Want to be a guest? <a href="/guestLogin">SignUp</a></span>
       <p>Or go <a href="/">home</a>.</p>
     </div>
 </div>
+<% } else if(page === 'hostSignup') { %>
+  <div class="container text-center">
+
+        <div class="inner col-sm-10 col-sm-offset-3">
+          <section>
+            <% if (message.length > 0) { %>
+                <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+            <h1>HOST SIGNUP</h1>
+                <form action="/hostSignup" method="post">
+              <div class="fields">
+                <div class="field half">
+                  <input type="text" name="firstName" id="name" placeholder="firstName" />
+                </div>
+                <div class="field half">
+                  <input type="text" name="lastName" id="email" placeholder="lastName" />
+                </div>
+                <div class="field">
+                  <input type="email" name="email" id="email" placeholder="Email" />
+                </div>
+                <div class="field">
+                  <input type="password" name="password" id="password" placeholder="password" />
+                </div>
+                  <input type="text" name="userType" value="host" style="display: none" />
+              </div>
+              <ul class="actions">
+                <li><button type="submit">Signup</button></li>
+              </ul>
+            </form>
+          </section>
+          <hr>
+          <p>Already have an account? <a href="/hostLogin">Login</a></p>
+          <span>Want to be a guest? <a href="/guestSignup">SignUp</a></span>
+          <p>Or go <a href="/">home</a>.</p>
+        </div>
+
+  </div>
+
+  <% } %>
 </body>
 </html>

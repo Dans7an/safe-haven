@@ -17,9 +17,9 @@
   <div class="container">
 
     <div class="page-header text-center">
-      <h1>Host Profile Page</h1>
+      <h1>Host Requests Page</h1>
       <h2><%= user.local.email %></h2>
-      <a href="/hostrequests" class="btn btn-default btn-sm">requests</a>
+      <a href="/HostProfile" class="btn btn-default btn-sm">Profile</a>
       <a href="/logout" class="btn btn-default btn-sm">Logout</a>
       <% if (user.local.email) { %>
       <a href="/unlink/local" class="btn btn-default">Delete</a>
@@ -33,14 +33,14 @@
     <!-- LOCAL INFORMATION -->
 
     <!-- <div class="col">
-          <h3>Messages</h3>
-          <ul class="messages">
-          <% for(var i=0; i<messages.length; i++) {%>
-            <li class="message" data-id="<%= messages[i]._id %>"</li>
+          <h3>house</h3>
+          <ul class="house">
+          <% for(var i=0; i<house.length; i++) {%>
+            <li class="house" data-id="<%= house[i]._id %>"</li>
               <img class="houses" src="img/sample-house.jpg" alt="">
-              <span><%= messages[i].name %></span>
-              <span><%= messages[i].msg %></span>
-              <span><%= messages[i].thumbUp %></span>
+              <span><%= house[i].name %></span>
+              <span><%= house[i].msg %></span>
+              <span><%= house[i].thumbUp %></span>
               <span><i class="fa fa-thumbs-up" aria-hidden="true"></i></span>
               <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
               <span><i class="fa fa-trash" aria-hidden="true"></i></span>
@@ -48,11 +48,11 @@
           <% } %>
           </ul>
 
-          <h2>Add a message</h2>
+          <h2>Add a house</h2>
         <% if (user.local.email) { %>
-          <form action="/messages" method="POST">
+          <form action="/house" method="POST">
             <input type="text" name="name">
-            <input type="text" placeholder="message" name="msg">
+            <input type="text" placeholder="house" name="msg">
             <button class="btn btn-lg btn-primary btn-block" type="submit">Submit</button>
           </form>
         </div>
@@ -67,42 +67,48 @@
       <div id="main">
         <div class="inner">
 
-          <section class="tiles">
-            <% for(var i=0; i<messages.length; i++) {%>
-            <article data-id="<%= messages[i]._id %>">
+            <% for(var i=0; i<house.length; i++) {%>
+              <section class="tiles fullRequest">
+
               <span class="image square">
-                <img class="houses landscape" src="<%= messages[i].house[0] %>" alt="">
+                <img class="houses landscape" src="<%= house[i].house[0] %>" alt="">
+                <span><%= house[i].name %></span>
+                <span><%= house[i].msg %></span>
               </span>
               <!-- <a href="generic.html"> -->
                 <div class="content">
-                  <span><%= messages[i].name %></span>
-                  <span><%= messages[i].thumbUp %></span>
-                  <a href="edit/<%= messages[i]._id %>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                  <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
                 </div>
               <!-- </a> -->
-              <span><%= messages[i].msg %></span>
-              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
-            </article>
+            <% } %>
+
+            <% for(var i=0; i<request.length; i++) {%>
+
+              <!-- <a href="generic.html"> -->
+                <div class="content">
+                  <ul class="hostRequest">
+                    <li><h5><a href="#">Name: <%= request[i].firstName %> <%= request[i].lastName %></a></h5></li>
+                    <li> <span>Age: </span> <%= request[i].age %></li>
+                    <li><span>Sex:</span> <%= request[i].sex %></li>
+                    <li><span>Email:</span> <%= request[i].guestEmail %></li>
+                    <li><span>Tel:</span> <%= request[i].phoneNumber %></li>
+                    <li><span>From:</span> <%= request[i].arrive %> <span>To:</span> <%= request[i].departure %></li>
+                    <li><span>Offering to:</span><%= request[i].offering %></li>
+                    <li><span>ExtraInformation</span><%= request[i].extraInformation %></li>
+                    <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+
+                  </ul>
+
+                </div>
+              <!-- </a> -->
+
             <% } %>
           </section>
-
         </div>
       </div>
 
-      <h2>Add a house</h2>
-    <% if (user.local.email) { %>
-      <form action="/messages" method="post" enctype="multipart/form-data">
-        <input type="text" name="name" class="name" placeholder="location">
-        <input type="text" placeholder="space to lend" name="msg" class="msg">
-        <input type="text" name="rules" value="" placeholder="house rules eg smoking, pets, or kids">
-        <textarea name="description" rows="10" cols="80" placeholder="house description and Miscellenous"></textarea>
-        <!-- <input type="text" placeholder="Preferred way of Contacting you?" name="contact"> -->
-        <input class="logo" type="file" name="file-to-upload" placeholder="" multiple>
-        <input type="submit" class= "submitBtn" />
-      </form>
+
     </div>
-    <% } %>
+
     </div>
 
     <script src="main.js"></script>

@@ -32,26 +32,8 @@
 								</a> -->
 
 							<!-- Nav -->
-								<nav>
-									<ul>
-										<li><a href="#menu">Menu</a></li>
-									</ul>
-								</nav>
+							<%- include('header'); -%>
 
-						</div>
-					</header>
-
-				<!-- Menu -->
-					<nav id="menu">
-						<h2>Menu</h2>
-						<ul>
-							<li><a href="/">Home</a></li>
-							<li><a href="/signup">Signup</a></li>
-							<li><a href="/login">Login</a></li>
-							<li><a href="generic.html">Contact us</a></li>
-							<li><a href="elements.html">Elements</a></li>
-						</ul>
-					</nav>
 
 				<!-- Main -->
 					<div>
@@ -76,15 +58,15 @@
 							<% } %>
 							</section>
 							<section class="vertical clearfix" style="height: 500px">
-								<span>Location</span>
-								<span><%= message.name %></span>
-								<span>Space available</span>
-								<span><%= message.msg %></span>
-								<span>House Rules</span>
-								<span><%= message.rules %></span>
-								<span>House Description</span>
+								<!-- <span>Location</span> -->
+								<p><%= message.name %></p>
+								<!-- <span>Space available</span> -->
+								<p><%= message.msg %></p>
+								<!-- <span>House Rules</span> -->
+								<p><%= message.rules %></p>
+								<!-- <span>House Description</span> -->
 								<p><%= message.description %></p>
-							<a href="guestSignup"><button type="button" name="button">Contact the Host</button></a>
+							<a href="/requestform/<%= message._id %>?hostId=<%= message.hostId %>"><button type="button" name="button">Contact the Host</button></a>
 
 							</section>
 							<!-- <h1>Generic Page</h1> -->

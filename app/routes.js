@@ -43,8 +43,9 @@ function escapeRegex(text) {
     });
 
     // PROFILE SECTION =========================
-    app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('houses').find().toArray((err, result) => {
+    app.get('/HostProfile', isLoggedIn, isHost, function(req, res) {
+      let uid = ObjectId(req.session.passport.user)
+        db.collection('houses').find({hostId: uid}).toArray((err, result) => {
           if (err) return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
@@ -52,10 +53,32 @@ function escapeRegex(text) {
           })
         })
     });
+    app.get('/requestform/:id', isGuest, function(req, res) {
+        console.log("Its me",req.query);
+        console.log(req.query.hostId);
+        db.collection('houses').find({_id: ObjectId(req.params.id)}).toArray((err, result) => {
+          if (err) return console.log(err)
+          res.render('request.ejs', {
+            user : req.user,
+            messages: result
+          })
+        })
+    });
+// req.session.passport.user for finding out whose logged in
 
+//     app.get('/requestform/:id', isLoggedInAsGuest, function(req, res) {
+//     db.collection('houses').find().toArray((err, result) => {
+//       if (err) return console.log(err)
+//       res.render('request.ejs', {
+//         user : req.user,
+//         messages: result
+//       })
+//     })
+// });
 
     // FULL VIEW OF THE HOUSE ==============================
     app.get('/fullView', function(req,res){
+      console.log(req);
       console.log(req.query.house_id);
       db.collection('houses').findOne({_id: ObjectId(req.query.house_id)}, (err, result) => {
         if(err) return res.send(500, err)
@@ -91,6 +114,7 @@ var upload = multer({storage: storage})
       // const resulting = cloudinary.uploader.upload(req.files.('img/' + filename)
       console.log(req.files);
       db.collection('houses').save({
+        hostId: req.user._id,
         name: req.body.name,
         msg: req.body.msg,
         rules: req.body.rules,
@@ -99,7 +123,65 @@ var upload = multer({storage: storage})
       (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
-        res.redirect('/profile')
+        res.redirect('/HostProfile')
+      })
+    })
+
+    app.get('/guestProfile', isGuest, function(req,res){
+      console.log(req.user._id);
+      let gid = ObjectId(req.user._id)
+      db.collection('requests').find({guestId: gid}).toArray((err, result) => {
+        if(err) return res.send(500, err)
+        console.log(result);
+        res.render('guestProfile.ejs', {
+          user: req.user,
+          requests: result
+        })
+      })
+    })
+    app.get('/hostrequests', isHost, function(req,res){
+      let hid = ObjectId(req.session.passport.user)
+      db.collection('houses').find({hostId: hid}).toArray((err, result) => {
+        console.log("wanted",result._id);
+        console.log("another one", result);
+        db.collection('requests').find({hostId: hid}).toArray((err, result2) => {
+          if(err) return res.send(500, err)
+          console.log(result);
+          res.render('hostRequests.ejs', {
+            user: req.user,
+            house: result,
+            request: result2
+          })
+        })
+
+      })
+    })
+
+
+    app.post('/requests', (req, res) => {
+      // console.log(req.body["file-to-upload"]);
+      // 'img/' +
+      // const resulting = cloudinary.uploader.upload(req.files.('img/' + filename)
+      console.log(req.query.hostId);
+      db.collection('requests').save({
+        hostId: ObjectId(req.body.hostId),
+        houseId: ObjectId(req.body.houseId),
+        guestId: req.user._id,
+        guestEmail: req.user.local.email,
+        firstName: req.user.local.firstName,
+        lastName: req.user.local.lastName,
+        sex: req.user.local.sex,
+        age: req.user.local.age,
+        arrive: req.body.arrive,
+        departure: req.body.departure,
+        offering: req.body.offering,
+        phoneNumber: req.body.phoneNumber,
+        extraInformation: req.body.extraInformation
+       },
+      (err, result) => {
+        if (err) return console.log(err)
+        console.log('saved to database')
+        res.redirect('/guestProfile')
       })
     })
 // editing houses
@@ -144,14 +226,7 @@ app.post('/sendEmail', function (req, res) {
           pass: '6asFE7kp2A3jXJtqjB'
         }
       });
-      // let singleEmailArray = []
-      // if(typeof req.body.email === "string") {
-      //   singleEmailArray.push(req.body.email)
-      //   console.log(singleEmailArray)
-      //   req.body.email = singleEmailArray
-      // }
-      // send mail with defined transport object
-      // "${req.body.name}" <${req.body.serSendEmail}>
+
       let info = await transporter.sendMail({
         from: `"Fred Foo :ghost:" ${req.body.email}`,// sender address
         to: 'tamara.gleason42@ethereal.email',// list of receivers
@@ -214,53 +289,65 @@ app.post('/sendEmail', function (req, res) {
     // locally --------------------------------
         // LOGIN ===============================
         // show the login form
-        app.get('/login', function(req, res) {
-            res.render('login.ejs', { message: req.flash('loginMessage') });
+        app.get('/hostLogin', function(req, res) {
+            res.render('login4host.ejs', {
+              message: req.flash('loginMessage'),
+              page: 'hostLogin'
+            });
         });
 
         // process the login form
-        app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
+        app.post('/hostLogin', passport.authenticate('local-login', {
+            successRedirect : '/HostProfile', // redirect to the secure profile section
+            failureRedirect : '/hostLogin', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
 
         // SIGNUP =================================
         // show the signup form for host
-        app.get('/signup', function(req, res) {
-            res.render('signup.ejs', { message: req.flash('signupMessage') });
+        app.get('/hostSignup', function(req, res) {
+            res.render('login4host.ejs', {
+              message: req.flash('signupMessage'),
+              page: 'hostSignup'
+            });
         });
 
-        // process the signup form
-        app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
-            failureRedirect : '/signup', // redirect back to the signup page if there is an error
+        // process the signup form for host
+        app.post('/hostSignup', passport.authenticate('local-signup', {
+            successRedirect : '/hostProfile', // redirect to the secure profile section
+            failureRedirect : '/hostSignup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
 
         // locally --------------------------------
             // LOGIN ===============================
-            // show the login form
-            app.get('/loginguest', function(req, res) {
-                res.render('login.ejs', { message: req.flash('loginMessage') });
+            // show the login form for guest
+            app.get('/guestLogin', function(req, res) {
+                res.render('guestSignup.ejs', {
+                   message: req.flash('loginMessage'),
+                   page: 'guestLogin'
+                 });
             });
 
             // process the login form
-            app.post('/login', passport.authenticate('local-login', {
-                successRedirect : '/profile', // redirect to the secure profile section
-                failureRedirect : '/login', // redirect back to the signup page if there is an error
+            app.post('/guestLogin', passport.authenticate('local-login', {
+                successRedirect : '/guestProfile', // redirect to the secure profile section
+                failureRedirect : '/guestLogin', // redirect back to the signup page if there is an error
                 failureFlash : true // allow flash messages
             }));
 
             // SIGNUP =================================
             // show the signup form for guest
             app.get('/guestSignup', function(req, res) {
-                res.render('guestSignup.ejs', { message: req.flash('signupMessage') });
+                res.render('guestSignup.ejs', {
+                  message: req.flash('signupMessage'),
+                  page: 'guestSignup'
+                });
             });
 
             // process the signup form
             app.post('/guestSignup', passport.authenticate('local-signup', {
-                successRedirect : '/profile', // redirect to the secure profile section
+                successRedirect : '/guestProfile', // redirect to the secure profile section
                 failureRedirect : '/guestSignup', // redirect back to the signup page if there is an error
                 failureFlash : true // allow flash messages
             }));
@@ -278,7 +365,7 @@ app.post('/sendEmail', function (req, res) {
         user.local.email    = undefined;
         user.local.password = undefined;
         user.save(function(err) {
-            res.redirect('/profile');
+            res.redirect('/HostProfile');
         });
     });
 
@@ -289,5 +376,32 @@ function isLoggedIn(req, res, next) {
     if (req.isAuthenticated())
         return next();
 
-    res.redirect('/');
+    res.redirect('/hostLogin');
 }
+// route middleware to ensure user is logged in
+function isLoggedInAsGuest(req, res, next) {
+    if (req.isAuthenticated())
+        return next();
+
+    res.redirect('/guestLogin');
+}
+function isHost(req, res, next) {
+  if (req.user.local.userType == 'host')
+    return next();
+  res.redirect('/hostLogin');
+}
+function isGuest(req, res, next) {
+  if (req.user.local.userType == 'guest')
+    return next();
+  res.redirect('/guestLogin');
+}
+// function redirectPage(req, res){
+//   console.log('hello 123');
+//   if(req.route.path === '/fullView'){
+//     console.log('hello');
+//     res.redirect('/fullView')
+//   } else{
+//     console.log('456');
+//     res.redirect('/guestProfile')
+//   }
+// }

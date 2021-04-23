@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Safe-Haven</title>
+  <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/sign-in/">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="style.css"> -->
+  <link rel="stylesheet" href="../assets/css/main.css" />
+  <noscript>
+    <link rel="stylesheet" href="../assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+  <div class="container">
+
+    <div class="page-header text-center">
+      <h1>Request Page</h1>
+      <h2><%= user.local.firstName %> <%= user.local.lastName %></h2>
+      <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+      <a href="/" class="btn btn-default btn-sm">Home</a>
+
+      <a href="/guestProfile" class="btn btn-default btn-sm">Profile</a>
+
+    </div>
+
+    <div id="wrapper">
+      <!-- Header -->
+      <%- include('header'); -%>
+
+      <!-- Main -->
+
+
+      <h2>Send a Request</h2>
+    <% if (user.local.email) { %>
+      <form action="/requests" method="post">
+        <input type="text" name="hostId" value="<%= messages[0].hostId %>" style="display: none">
+        <input type="text" name="houseId" value="<%= messages[0]._id %>" style="display: none">
+        <label for="arrive">When do you expect to move?</label>
+        <input type="date" name="arrive" class="arrive" placeholder="location">
+        <label for="departure">When do you expect to say Good-bye?</label>
+        <input type="date" name="departure" class="msg">
+        <input type="tel" name="phoneNumber" placeholder="Best Cell phone number to reach you">
+        <input type="text" name="offering" placeholder="Any services you might be willing to offer">
+        <textarea name="extraInformation" rows="10" cols="80" placeholder="Any Extra information you might want to provide or ask host?"></textarea>
+        <input type="submit" class= "submitBtn" />
+      </form>
+    </div>
+    <% } %>
+    </div>
+
+    <script src="main.js"></script>
+    <!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/browser.min.js"></script>
+			<script src="../assets/js/breakpoints.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+</body>
+
+</html>
