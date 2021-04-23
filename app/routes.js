@@ -53,7 +53,7 @@ function escapeRegex(text) {
           })
         })
     });
-    app.get('/requestform/:id', isGuest, function(req, res) {
+    app.get('/requestform/:id',isLoggedInAsGuest, function(req, res) {
         console.log("Its me",req.query);
         console.log(req.query.hostId);
         db.collection('houses').find({_id: ObjectId(req.params.id)}).toArray((err, result) => {
@@ -141,16 +141,15 @@ var upload = multer({storage: storage})
     })
     app.get('/hostrequests', isHost, function(req,res){
       let hid = ObjectId(req.session.passport.user)
-      db.collection('houses').find({hostId: hid}).toArray((err, result) => {
+      db.collection('requests').find({hostId: hid}).toArray((err, result) => {
         console.log("wanted",result._id);
         console.log("another one", result);
-        db.collection('requests').find({hostId: hid}).toArray((err, result2) => {
+        db.collection('houses').find({hostId: hid}).toArray((err, result2) => {
           if(err) return res.send(500, err)
-          console.log(result);
           res.render('hostRequests.ejs', {
             user: req.user,
-            house: result,
-            request: result2
+            house: result2,
+            request: result
           })
         })
 
@@ -391,6 +390,7 @@ function isHost(req, res, next) {
   res.redirect('/hostLogin');
 }
 function isGuest(req, res, next) {
+  console.log(req);
   if (req.user.local.userType == 'guest')
     return next();
   res.redirect('/guestLogin');
