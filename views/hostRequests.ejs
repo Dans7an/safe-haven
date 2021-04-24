@@ -85,7 +85,7 @@
 
               <!-- <a href="generic.html"> -->
                 <div class="content">
-                  <ul class="hostRequest">
+                  <ul class="hostRequest" data-requestId="<%= request[i]._id %>">
                     <li><h5><a href="#">Name: <%= request[i].firstName %> <%= request[i].lastName %></a></h5></li>
                     <li> <span>Age: </span> <%= request[i].age %></li>
                     <li><span>Sex:</span> <%= request[i].sex %></li>
@@ -94,6 +94,7 @@
                     <li><span>From:</span> <%= request[i].arrive %> <span>To:</span> <%= request[i].departure %></li>
                     <li><span>Offering to:</span><%= request[i].offering %></li>
                     <li><span>ExtraInformation</span><%= request[i].extraInformation %></li>
+                    <li><span>Status: </span><%= request[i].status %> <span class="statusKeys Accept" >Accept</span> <span class="statusKeys Decline">Decline</span></li>
                     <span><i class="fa fa-trash" aria-hidden="true"></i></span>
 
                   </ul>

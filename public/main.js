@@ -1,4 +1,5 @@
-var thumbUp = document.getElementsByClassName("fa-thumbs-up");
+var accepted = document.getElementsByClassName("Accept");
+var declined = document.getElementsByClassName("Decline");
 var trash = document.getElementsByClassName("fa-trash");
 var fullView = document.getElementsByClassName("houses");
 
@@ -41,21 +42,15 @@ Array.from(fullView).forEach(function(element) {
   })
 })
 
-
-Array.from(thumbUp).forEach(function(element) {
+Array.from(accepted).forEach(function(element) {
       element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const house_id = this.parentNode.parentNode.getAttribute('data-id')
-        const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
-        fetch('messages', {
+        const requestId = this.parentNode.parentNode.getAttribute('data-requestId')
+        console.log(this.parentNode.childNodes[1]);
+        fetch('accepted', {
           method: 'put',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            'name': name,
-            'msg': msg,
-            'id': house_id,
-            'thumbUp':thumbUp
+            'requestId': requestId
           })
         })
         .then(response => {
@@ -63,7 +58,27 @@ Array.from(thumbUp).forEach(function(element) {
         })
         .then(data => {
           console.log(data)
-          // window.location.reload(true)
+          window.location.reload(true)
+        })
+      });
+});
+
+Array.from(declined).forEach(function(element) {
+      element.addEventListener('click', function(){
+        const requestId = this.parentNode.parentNode.getAttribute('data-requestId')
+        fetch('declined', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            'requestId': requestId
+          })
+        })
+        .then(response => {
+          if (response.ok) return response.json()
+        })
+        .then(data => {
+          console.log(data)
+          window.location.reload(true)
         })
       });
 });

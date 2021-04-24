@@ -175,7 +175,8 @@ var upload = multer({storage: storage})
         departure: req.body.departure,
         offering: req.body.offering,
         phoneNumber: req.body.phoneNumber,
-        extraInformation: req.body.extraInformation
+        extraInformation: req.body.extraInformation,
+        status: "pending"
        },
       (err, result) => {
         if (err) return console.log(err)
@@ -271,6 +272,36 @@ app.post('/sendEmail', function (req, res) {
         }
       }
   )
+  })
+  //Update status
+  app.put('/accepted', (req, res) => {// request to update inforamtion on the page
+    db.collection('requests')// go into db collection
+    .findOneAndUpdate({_id: ObjectId(req.body.requestId)}, {//find the properties and updating
+      $set: {//changing whaterver property
+        status: "Approved"//from the request data go to thumbup value and adding 1
+      }
+    }, {
+      sort: {_id: -1},//ordering the response in descending order
+      upsert: true//create the object if no object/document present
+    }, (err, result) => {//respond with error
+      if (err) return res.send(err)
+      res.send(result)
+    })
+  })
+
+  app.put('/declined', (req, res) => {// request to update inforamtion on the page
+    db.collection('requests')// go into db collection
+    .findOneAndUpdate({_id: ObjectId(req.body.requestId)}, {//find the properties and updating
+      $set: {//changing whaterver property
+        status: "Declined"//from the request data go to thumbup value and adding 1
+      }
+    }, {
+      sort: {_id: -1},//ordering the response in descending order
+      upsert: true//create the object if no object/document present
+    }, (err, result) => {//respond with error
+      if (err) return res.send(err)
+      res.send(result)
+    })
   })
   // deleting
     app.delete('/messages', (req, res) => {
