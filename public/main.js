@@ -85,19 +85,15 @@ Array.from(declined).forEach(function(element) {
 
 Array.from(trash).forEach(function(element) {
       element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const house_id = this.parentNode.parentNode.getAttribute('data-id')
-                console.log(house_id);
-        fetch('messages', {
+        const requestId = this.parentNode.parentNode.getAttribute('data-id')
+        console.log(requestId);
+        fetch('requests', {
           method: 'delete',
           headers: {
             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            'name': name,
-            'msg': msg,
-            'id': house_id
+            'requestId': requestId
           })
         }).then(function (response) {
           window.location.reload()

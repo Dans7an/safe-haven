@@ -53,6 +53,21 @@ function escapeRegex(text) {
           })
         })
     });
+
+    app.get('/guestProfile/:id', function(req, res) {
+        console.log("Its me",req.params);
+        db.collection('users').find({_id: ObjectId(req.params.id)}).toArray((err, result) => {
+          if (err) return console.log(err)
+          console.log(result);
+          console.log(result[0].local);
+
+          res.render('signup.ejs', {
+            // user : req.user,
+            user: result[0].local
+          })
+        })
+    });
+
     app.get('/requestform/:id',isLoggedInAsGuest, function(req, res) {
         console.log("Its me",req.query);
         console.log(req.query.hostId);
@@ -131,24 +146,34 @@ var upload = multer({storage: storage})
       console.log(req.user._id);
       let gid = ObjectId(req.user._id)
       db.collection('requests').find({guestId: gid}).toArray((err, result) => {
-        if(err) return res.send(500, err)
-        console.log(result);
-        res.render('guestProfile.ejs', {
-          user: req.user,
-          requests: result
+        db.collection('houses').find().toArray((err,result2) => {
+          if(err) return res.send(500, err)
+          result = result.map(r => {
+            r.house = result2.find(r2 => r2._id.toString() == r.houseId.toString())
+            return r
+          })
+          res.render('guestProfile.ejs', {
+            user: req.user,
+            requests: result
+          })
         })
+
       })
     })
+
     app.get('/hostrequests', isHost, function(req,res){
       let hid = ObjectId(req.session.passport.user)
       db.collection('requests').find({hostId: hid}).toArray((err, result) => {
-        console.log("wanted",result._id);
-        console.log("another one", result);
         db.collection('houses').find({hostId: hid}).toArray((err, result2) => {
           if(err) return res.send(500, err)
+          result = result.map(r => {
+            console.log(r.houseId, result2[0]._id);
+            r.house = result2.find(r2 => r2._id.toString() == r.houseId.toString())
+            console.log(r);
+            return r
+          })
           res.render('hostRequests.ejs', {
             user: req.user,
-            house: result2,
             request: result
           })
         })
@@ -311,7 +336,13 @@ app.post('/sendEmail', function (req, res) {
         res.send('Message deleted!')
       })
     })
-
+    app.delete('/requests', (req, res) => {
+      console.log('requestId', req.body.requestId);
+      db.collection('requests').findOneAndDelete({_id: ObjectId(req.body.requestId)}, (err, result) => {
+        if (err) return res.send(500, err)
+        res.send('Message deleted!')
+      })
+    })
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
 // =============================================================================
