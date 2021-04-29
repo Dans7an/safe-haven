@@ -121,12 +121,19 @@ module.exports = function(app, passport, db, multer, multerS3, s3, aws) {
       _id: ObjectId(req.query.house_id)
     }, (err, result) => {
       if (err) return res.send(500, err)
-      console.log(result);
+      const hostId = result.hostId
+
+      db.collection('users').findOne({
+        _id: ObjectId(hostId)
+      }, (err, hostinfo) => {
+      
       res.render('generic.ejs', {
         user: req.user,
-        message: result
+        message: result,
+        hostinfo: hostinfo
       })
     })
+  })
   })
 
   // LOGOUT ==============================
