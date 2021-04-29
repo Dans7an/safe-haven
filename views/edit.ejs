@@ -93,35 +93,66 @@
         <div class="inner">
 
           <section class="tiles">
-            <% for(var i=0; i<messages[0].house.length; i++) {%>
+            <% for(var i=0; i<messages.length; i++) {%>
             <article data-id="<%= messages[0]._id %>">
 							<span>Image <%= i + 1 %></span>
               <span class="image square">
-                <img class="houses landscape" src="../<%= messages[0].house[i] %>" alt="">
+                <img class="houses landscape" src="https://safe-havre.s3.us-east-2.amazonaws.com/<%= messages[0].Thumbnail %>" alt="">
               </span>
               <!-- <a href="generic.html"> -->
                 <div class="content">
-                  <span><%= messages[0].name %></span>
+                  <span><%= messages[0].location %></span>
                   <!-- <span><%= messages[0].thumbUp %></span> -->
                 </div>
               <!-- </a> -->
-              <span><%= messages[0].msg %></span>
+              <span><%= messages[0].space %></span>
             </article>
-            <% } %>
-          </section>
 
+            <article data-id="<%= messages[0]._id %>">
+              <span>Image 2</span>
+              <span class="image square">
+                <img class="houses landscape" src="https://safe-havre.s3.us-east-2.amazonaws.com/<%= messages[0].secondImage %>" alt="">
+              </span>
+              <!-- <a href="generic.html"> -->
+                <div class="content">
+                  <span><%= messages[0].location %></span>
+                  <!-- <span><%= messages[0].thumbUp %></span> -->
+                </div>
+              <!-- </a> -->
+              <span><%= messages[0].space %></span>
+            </article>
+            <article data-id="<%= messages[0]._id %>">
+              <span>Image 3</span>
+              <span class="image square">
+                <img class="houses landscape" src="https://safe-havre.s3.us-east-2.amazonaws.com/<%= messages[0].thirdImage %>" alt="">
+              </span>
+              <!-- <a href="generic.html"> -->
+                <div class="content">
+                  <span><%= messages[0].location %></span>
+                  <!-- <span><%= messages[0].thumbUp %></span> -->
+                </div>
+              <!-- </a> -->
+              <span><%= messages[0].space %></span>
+            </article>
+          </section>
+            <% } %>
         </div>
       </div>
 
       <h2>Update house</h2>
     <% if (user.local.email) { %>
       <form action="/updateHouse" method="post" enctype="multipart/form-data">
-        <input type="text" name="name" class="name" placeholder="location" value="<%= messages[0].name  %>">
-        <input type="text" placeholder="space to lend" name="msg" class="msg" value="<%= messages[0].msg  %>">
+        <input type="text" name="name" class="location" placeholder="location" value="<%= messages[0].location  %>">
+        <input type="text" placeholder="space to lend" name="space" class="msg" value="<%= messages[0].space  %>">
         <!-- <textarea name="description" rows="10" cols="80" placeholder="house description or extra information"></textarea>
         <input type="text" placeholder="Preferred way of Contacting you?" name="contact"> -->
-				<input type="text" name="ObjectId" value="<%= messages[0]._id %>" style="display: none">
-        <input class="logo" type="file" name="file-to-upload" placeholder="" multiple>
+				<input type="hidden" name="ObjectId" value="<%= messages[0]._id %>">
+        <label for="thumbnail">Thumbnail</label>
+        <input class="logo" type="file" name="thumbnail" id="thumbnail">
+        <label for="secondImage">secondImage</label>
+        <input class="logo" type="file" name="secondImage" placeholder="" id="secondImage">
+        <label for="thirdImage">thirdImage</label>
+        <input class="logo" type="file" name="thirdImage" placeholder="" id="thirdImage">
         <input type="submit" class= "submitBtn" />
       </form>
     </div>

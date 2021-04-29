@@ -36,8 +36,8 @@
       <h2>Send a Request</h2>
     <% if (user.local.email) { %>
       <form action="/requests" method="post">
-        <input type="text" name="hostId" value="<%= messages[0].hostId %>" style="display: none">
-        <input type="text" name="houseId" value="<%= messages[0]._id %>" style="display: none">
+        <input type="hidden" name="hostId" value="<%= messages[0].hostId %>" >
+        <input type="hidden" name="houseId" value="<%= messages[0]._id %>" >
         <label for="arrive">When do you expect to move?</label>
         <input type="date" name="arrive" class="arrive" placeholder="location">
         <label for="departure">When do you expect to say Good-bye?</label>

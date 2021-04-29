@@ -19,6 +19,13 @@ var configDB = require('./config/database.js');
 var multer = require('multer');
 const nodemailer = require("nodemailer");
 var db
+//S3 packages
+var aws = require('aws-sdk');
+var multerS3 = require('multer-s3');
+var configAWS = require('./config/aws.js');
+var s3 = new aws.S3(configAWS);
+
+require("dotenv").config({ path: "./config/.env" });
 //req.body["file-to-upload"]
 // cloudinary cloud service for images
 // const cloudinary = require('cloudinary').v2;
@@ -32,7 +39,7 @@ var db
 mongoose.connect(process.env.mongoUrl, (err, database) => {
   if (err) return console.log(err)
   db = database
-  require('./app/routes.js')(app, passport, db, multer);
+  require('./app/routes.js')(app, passport, db, multer, multerS3, s3, aws);
 }); // connect to our database
 
 require('./config/passport')(passport); // pass passport for configuration

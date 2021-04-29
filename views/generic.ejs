@@ -27,8 +27,8 @@
 						<div class="inner">
 
 							<!-- Logo -->
-								<!-- <a href="index.html" class="logo">
-									<span class="symbol"><img src="images/logo.svg" alt="" /></span><span class="title">Phantom</span>
+								<!-- <a href="/" class="logo">
+									<span class="symbol"><img src="images/mainLogo.svg" alt="" /></span>
 								</a> -->
 
 							<!-- Nav -->
@@ -40,28 +40,24 @@
 						<div >
 							<!-- <h1>Generic Page</h1> -->
 							<section class="vertical img clearfix" style="background-image:
-   url('<%= message.house[0] %>')">
+   url('https://safe-havre.s3.us-east-2.amazonaws.com/<%= message.Thumbnail %>')">
 
 							</section>
 							<section class="vertical clearfix" style="height: 500px">
-								<% if(message.house.length > 1){ %>
 								<section class="horizontal img" style="background-image:
-   url('<%= message.house[1] %>')">
+   url('https://safe-havre.s3.us-east-2.amazonaws.com/<%= message.secondImage %>')">
 
 								</section>
-								<% } %>
-								<% if(message.house.length > 2){ %>
 									<section class="horizontal img" style="background-image:
-   url('<%= message.house[2] %>')">
+   url('https://safe-havre.s3.us-east-2.amazonaws.com/<%= message.thirdImage %>')">
 
 									</section>
-							<% } %>
 							</section>
 							<section class="vertical clearfix" style="height: 500px">
 								<!-- <span>Location</span> -->
-								<p><%= message.name %></p>
+								<p><%= message.location %></p>
 								<!-- <span>Space available</span> -->
-								<p><%= message.msg %></p>
+								<p><%= message.space %></p>
 								<!-- <span>House Rules</span> -->
 								<p><%= message.rules %></p>
 								<!-- <span>House Description</span> -->
@@ -69,28 +65,6 @@
 							<a href="/requestform/<%= message._id %>?hostId=<%= message.hostId %>"><button type="button" name="button">Request the Host</button></a>
 
 							</section>
-							<!-- <h1>Generic Page</h1> -->
-							<!-- <section class="vertical">
-								<img src="<%= message.house[0] %>" alt="" class="generic" />
-							</section>
-							<section class="vertical">
-								<% if(message.house.length > 1){ %>
-								<section class="horizontal">
-									<img src="<%= message.house[0] %>" alt="" class="generic" />
-								</section>
-								<% } %>
-								<% if(message.house.length > 2){ %>
-								<section class="horizontal">
-									<img src="<%= message.house[2] %>" alt="" class="generic" />
-								</section>
-							<% } %>
-							</section>
-							<section class="vertical">
-								<p><%= message.name %></p>
-								<p><%= message.msg %></p>
-								<p>Interdum et malesuada fames ac ante ipsum primis in faucibus. Pellentesque venenatis dolor imperdiet dolor mattis sagittis. Praesent rutrum sem diam, vitae egestas enim auctor sit amet. Pellentesque leo mauris, consectetur id ipsum sit amet, fersapien risus, commodo eget turpis at, elementum convallis elit. Pellentesque enim turpis, hendrerit tristique lorem ipsum dolor.</p>
-
-							</section> -->
 
 	        	</div>
 					</div>

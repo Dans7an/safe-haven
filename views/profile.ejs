@@ -19,10 +19,10 @@
     <div class="page-header text-center">
       <h1>Host Profile Page</h1>
       <h2><%= user.local.email %></h2>
-      <a href="/hostrequests" class="btn btn-default btn-sm">requests</a>
-      <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+      <a href="/hostrequests" class="btn btn-default">requests</a>
+      <a href="/logout" class="btn btn-default">Logout</a>
       <% if (user.local.email) { %>
-      <a href="/unlink/local" class="btn btn-default">Delete</a>
+      <a href="/unlink/local" class="btn btn-default">Deactivate Account</a>
       <% } else { %>
       <a href="/connect/local" class="btn btn-default">Connect Local</a>
       <% } %>
@@ -71,18 +71,18 @@
             <% for(var i=0; i<messages.length; i++) {%>
             <article data-id="<%= messages[i]._id %>">
               <span class="image square">
-                <img class="houses landscape" src="<%= messages[i].house[0] %>" alt="">
+                <img class="houses landscape" src="https://safe-havre.s3.us-east-2.amazonaws.com/<%= messages[i].Thumbnail %> " alt="">
               </span>
               <!-- <a href="generic.html"> -->
                 <div class="content">
-                  <span><%= messages[i].name %></span>
+                  <span class="littleMargin"><%= messages[i].location %></span>
                   <span><%= messages[i].thumbUp %></span>
                   <a href="edit/<%= messages[i]._id %>"><i class="fa fa-edit" aria-hidden="true"></i></a>
-                  <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span>
+                  <!-- <span><i class="fa fa-thumbs-down" aria-hidden="true"></i></span> -->
                 </div>
               <!-- </a> -->
-              <span><%= messages[i].msg %></span>
-              <span><i class="fa fa-trash" aria-hidden="true"></i></span>
+              <span class="littleMargin"><%= messages[i].space %></span>
+              <span><i class="fa fa-trash same" aria-hidden="true"></i></span>
             </article>
             <% } %>
           </section>
@@ -93,12 +93,17 @@
       <h2>Add a house</h2>
     <% if (user.local.email) { %>
       <form action="/messages" method="post" enctype="multipart/form-data">
-        <input type="text" name="name" class="name" placeholder="location">
-        <input type="text" placeholder="space to lend" name="msg" class="msg">
+        <input type="text" name="location" class="name" placeholder="location">
+        <input type="text" placeholder="space to lend" name="space" class="msg">
         <input type="text" name="rules" value="" placeholder="house rules eg smoking, pets, or kids">
         <textarea name="description" rows="10" cols="80" placeholder="house description and Miscellenous"></textarea>
         <!-- <input type="text" placeholder="Preferred way of Contacting you?" name="contact"> -->
-        <input class="logo" type="file" name="file-to-upload" placeholder="" multiple>
+        <label for="thumbnail">Thumbnail (House Image)</label>
+        <input class="logo" type="file" name="thumbnail" id="thumbnail">
+        <label for="secondImage">secondImage (eg bedroom or space)</label>
+        <input class="logo" type="file" name="secondImage" placeholder="" id="secondImage">
+        <label for="thirdImage">thirdImage (eg bathroom)</label>
+        <input class="logo" type="file" name="thirdImage" placeholder="" id="thirdImage">
         <input type="submit" class= "submitBtn" />
       </form>
     </div>

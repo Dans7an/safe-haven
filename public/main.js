@@ -1,6 +1,7 @@
 var accepted = document.getElementsByClassName("Accept");
 var declined = document.getElementsByClassName("Decline");
 var trash = document.getElementsByClassName("fa-trash");
+var trash2 = document.getElementsByClassName("same");
 var fullView = document.getElementsByClassName("houses");
 
 //Responsible for the post request to the routes.js
@@ -94,6 +95,24 @@ Array.from(trash).forEach(function(element) {
           },
           body: JSON.stringify({
             'requestId': requestId
+          })
+        }).then(function (response) {
+          window.location.reload()
+        })
+      });
+});
+
+Array.from(trash2).forEach(function(element) {
+      element.addEventListener('click', function(){
+        const requestId = this.parentNode.parentNode.getAttribute('data-id')
+        console.log(requestId);
+        fetch('messages', {
+          method: 'delete',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            'id': requestId
           })
         }).then(function (response) {
           window.location.reload()

@@ -18,51 +18,113 @@
 
     <div class="page-header">
       <h1>Guest Profile Page</h1>
-      <div class="">
-        <div class="">
-          <img src="images/defaultProfile.png" alt="" class="">
+      <div class="row">
+        <div class="col-md-6">
+
+          <div class="imgX" style="background-image:
+             url('https://safe-havre.s3.us-east-2.amazonaws.com/<%= user.profileImg %>')"></div>
+          <!-- <img src="https://source.unsplash.com/user/erondu/1600x900" alt="" class="img-fluid"> -->
+
+            <!-- <img src="<%= user.profileImg %>" alt="" class="img-fluid"> -->
+
+          <!-- <form class="" action="/guestProfile" method="post" enctype="multipart/form-data">
+            <input type="file" name="file-to-upload">
+            <input type="submit" value="Upload">
+          </form> -->
+
         </div>
-                  <div class=" well">
+                  <div class="well col-md-6">
                       <h3><span class="fa fa-user"></span> Profile</h3>
 
                       <% if (user.local.email) { %>
                           <p>
                               <strong>First Name</strong>: <%= user.local.firstName %><br>
                               <strong>Last Name</strong>: <%= user.local.lastName %><br>
-                              <strong>sex</strong>: <%= user.local.sex %><br>
+                              <strong>Email</strong>: <%= user.local.email %><br>
+                              <strong>Gender</strong>: <%= user.local.sex %><br>
                               <strong>Age</strong>: <%= user.local.age %>
                           </p>
 
-                          <a href="/unlink/local" class="btn btn-default">Unlink</a>
+                          <!-- <a href="/unlink/local" class="btn btn-default">Unlink</a> -->
+                          <a href="/logout" class="btn btn-default">Logout</a>
+                          <% if (user.local.email) { %>
+                          <a href="/unlink/local" class="btn btn-default">Deactivate Account</a>
+                          <% } else { %>
+                          <a href="/connect/local" class="btn btn-default">Connect Local</a>
+                          <% } %>
 
                   </div>
               </div>
-      <h2><%= user.local.email %></h2>
-      <a href="/logout" class="btn btn-default btn-sm">Logout</a>
-      <% if (user.local.email) { %>
-      <a href="/unlink/local" class="btn btn-default">Delete</a>
-      <% } else { %>
-      <a href="/connect/local" class="btn btn-default">Connect Local</a>
-      <% } %>
+
+
     </div>
-    <h2>Your Requests</h2>
+
+    <form class="" action="/guestProfile" method="post" enctype="multipart/form-data">
+      <input type="file" name="file-to-upload" >
+      <input type="submit" value="Upload profile Pic" placeholder="" class="btn btn-default">
+    </form>
 
 
     <div id="wrapper">
       <!-- Header -->
+      <h2>Your Requests</h2>
+
       <%- include('header'); -%>
 
+<% /* %>
       <!-- Main -->
+      <div class="page-header">
+        <h1>Guest Profile Page</h1>
+            <section class="tiles fullRequest">
+        <div class="row">
+          <div class="col-md-6">
+            <span class="image square">
+              <img class="houses landscape" src="<%= user.profileImg %>" alt="">
+            </span>
+            <form class="" action="/guestProfile" method="post" enctype="multipart/form-data">
+              <input type="file" name="file-to-upload">
+              <input type="submit" value="Upload">
+            </form>
 
+          </div>
+                    <div class="well col-md-6">
+                      <div class="content">
+
+                        <h3><span class="fa fa-user"></span> Profile</h3>
+
+                        <% if (user.local.email) { %>
+                            <p>
+                                <strong>First Name</strong>: <%= user.local.firstName %><br>
+                                <strong>Last Name</strong>: <%= user.local.lastName %><br>
+                                <strong>Gender</strong>: <%= user.local.sex %><br>
+                                <strong>Age</strong>: <%= user.local.age %>
+                            </p>
+
+                            <a href="/unlink/local" class="btn btn-default">Unlink</a>
+                            <h2><%= user.local.email %></h2>
+                            <a href="/logout" class="btn btn-default btn-sm">Logout</a>
+                            <% if (user.local.email) { %>
+                            <a href="/unlink/local" class="btn btn-default">Delete</a>
+                            <% } else { %>
+                            <a href="/connect/local" class="btn btn-default">Connect Local</a>
+                            <% } %>
+</div>
+                    </div>
+
+
+          </div>
+        </section>
+      </div>
+      <% */ %>
 
 <div class="">
   <% for(var i=0; i<requests.length; i++) {%>
     <section class="tiles fullRequest">
 
     <span class="image square">
-      <img class="houses landscape" src="<%= requests[i].house.house[0] %>" alt="">
-      <span><%= requests[i].house.name %></span>
-      <span><%= requests[i].house.msg %></span>
+      <img class="houses landscape" src="https://safe-havre.s3.us-east-2.amazonaws.com/<%= requests[i].house.Thumbnail %>" alt="">
+      <span><%= requests[i].house.location %></span>
+      <span><%= requests[i].house.space %></span>
     </span>
     <!-- <a href="generic.html"> -->
       <div class="content">
@@ -74,13 +136,13 @@
       <ul class="hostRequest" data-id="<%= requests[i]._id %>">
         <li><h5><a href="#">Name: <%= requests[i].firstName %> <%= requests[i].lastName %></a></h5></li>
         <li> <span>Age: </span> <%= requests[i].age %></li>
-        <li><span>Sex: </span> <%= requests[i].sex %></li>
+        <li><span>Gender: </span> <%= requests[i].sex %></li>
         <li><span>Email: </span> <%= requests[i].guestEmail %></li>
         <li><span>Tel: </span> <%= requests[i].phoneNumber %></li>
         <li><span>From: </span> <%= requests[i].arrive %> <span>To:</span> <%= requests[i].departure %></li>
         <li><span>Offering to: </span><%= requests[i].offering %></li>
         <li><span>ExtraInformation: </span><%= requests[i].extraInformation %></li>
-        <li><span>Status: </span><%= requests[i].status %></li>
+        <li style="display: inline-block"><span>Status: </span><%= requests[i].status %></li>
         <span><i class="fa fa-trash" aria-hidden="true"></i></span>
 
       </ul>
